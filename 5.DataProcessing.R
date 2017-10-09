@@ -161,14 +161,14 @@ m <- matrix(
   ncol = 2,
   dimnames = list(c("spring","summer","fall","winter"),
                   c("male","female")
-                  )
+  )
 )
 
 tapply(
   m,
   list(c(1,1,2,2,1,1,2,2),
        c(1,1,1,1,2,2,2,2)
-       ),
+  ),
   sum
 )
 
@@ -302,6 +302,81 @@ x$val[is.na(x$val)] <- median(x$val, na.rm = TRUE)
 
 
 # iris내 일부데이터가 NA일경우 
+
+iris[1,1] = NA
+head(iris)
+
+median_per_species <- sapply(split(iris$Sepal.Length, iris$Species),median, na.rm=TRUE)
+
+iris <- within(iris, {
+  Sepal.Length <- ifelse(is.na(Sepal.Length), median_per_species[Species], Sepal.Length)  
+})
+
+head(iris)
+
+# 12.attach, dettach
+# with와 유사
+
+Sepal.Width
+
+attach(iris)
+head(Sepal.Width)
+
+detach(iris)
+Sepal.Width 
+
+# 주의 attach의 결과는 detach후 반영 안됨
+
+attach(iris)
+Sepal.Width[1] = -1
+head(Sepal.Width)
+detach(iris)
+
+head(iris)
+
+# 13 which(), which.max(), which.min()
+# which 주어진 조건을 만족하는 값의 색인을 찾는다.
+
+x <- c(2,4,6,7,10)
+
+x %% 2
+which(x %% 2 == 0)
+x[which(x %% 2 == 0)]
+
+# which.min() & max() 주어진벡터에서 최소/최대값 저장 색인 찾음
+x <- c(2,4,6,7,10)
+which.min(x)
+x[which.min(x)]
+
+which.max(x)
+x[which.max(x)]
+
+# 14 aggregate
+# aggregate(데이터,그룹조건,함수)
+# aggregate(formula,데이터,함수)
+
+aggregate(Sepal.Width ~ Species, iris, mean)
+
+# 15 stack(), unstack() : pivot 느낌.. 형태 변호
+x <- data.frame(
+  medicine=c("a","b","c"),
+  ctrl=c(5,3,2),
+  exp=c(4,5,7)
+)
+x
+
+stacked_x <- stack(x)
+stacked_x
+
+# install.packages("doBy")
+library(doBy)
+
+summaryBy(values ~ ind, stacked_x)
+
+unstack(stacked_x, values ~ ind)
+
+
+
 
 
 
