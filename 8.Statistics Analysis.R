@@ -338,4 +338,59 @@ t.test(x)
 x <- rnorm (300 , mean =10)
 t.test(x, mu=10)
 
+# 7.2 독립 이표본 평균
+sleep
+
+sleep2 <- sleep [ , -3]
+sleep2
+
+# 두 표본 평균
+tapply(sleep2$extra, sleep2$group, mean)
+
+
+library(doBy)
+summaryBy(extra~group, sleep2 )
+
+# 이표본 분산
+var.test(extra ~ group, sleep2)
+
+t.test ( extra ~ group , data = sleep2 , paired = FALSE , var.equal = TRUE )
+
+# 7.3 짝지은 이표본 평균
+# 실험전후 비교시 유용
+
+
+with(sleep, t.test( extra [ group ==1] , extra [ group ==2] , paired = TRUE ) )
+# p-value < 0.05이므로 귀무가설 ‘H0: 모평균의 차이가 0 이다’를 기각한다. 
+# 따라서 두 수면제의 수면시간 연장 정도가 다르다고 결론
+
+# 7.4 이표본 분산
+with ( iris , var.test ( Sepal.Width , Sepal.Length ) )
+# 수행결과 p-value가 매우작게 나타났다. 따라서 모분산에 차이가 없다는 귀무가설을 기각
+
+# 7.5 일표본 비율
+# 동전을 100번 던졌을때 앞면이 42번 나왔다고 하자. 이 때 동전의 앞면이 나오는 비율이 50%라고 할 수 있을까?
+# 정규분포로 근사
+prop.test (42 , 100)
+
+# binom.test()를 사용하면 이항분포에서 신뢰구간을 계산
+binom.test (42 , 100)
+# 이항분포를 통한 정확한 계산의 경우에도 동전의 앞면이 나올 확률이 0.5라는 귀무가설을 기각하지 못한다.
+
+# 7.6 이표본 비율
+# 두개의 동전을 각각 100회, 90회 던졌을 때 각각 앞면이 45회, 55회 나왔다고 하자. 
+prop.test ( c (45 , 55) , c (100 , 90) )
+# p < 0.05가 나와 두 동전의 앞면이 나올 확률이 같다는 가설을 기각
+
+
+
+
+
+
+
+
+
+
+
+
 
